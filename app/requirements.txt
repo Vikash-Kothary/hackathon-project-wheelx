@@ -1,0 +1,5 @@
+flask
+flask-sqlalchemy
+Jinja2
+Werkzeug
+alembic

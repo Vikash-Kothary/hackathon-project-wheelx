@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+   <head>Wheels need changed</head>
+   <body>
+      <h3>Wheels need changed</h3>
+      
+      <table>
+         <thead>
+            <tr>
+               <th>Unit</th>
+               <th>Vehicle</th>
+               <th>Wheel ID</th>
+               <th>Next MV Exam Date</th>
+            </tr>
+         </thead>
+         
+         <tbody>
+            {% for wheel in get_all_flagged_wheels %}
+               <tr>
+                  <td>{{ wheel.unit }}</td>
+                  <td>{{ wheel.vehicle }}</td>
+                  <td>{{ wheel.wheel_id }}</td>
+                  <td>{{ wheel.exam_date }}</td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+      
+   </body>
+</html>

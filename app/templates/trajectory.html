@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+   <head>Trajectory</head>
+   <body>
+      <h3>Trajectory</h3>
+      
+      <table>
+         <thead>
+            <tr>
+               <th>Unit</th>
+               <th>Vehicle</th>
+               <th>Wheel ID</th>
+               <th>Next MV Exam Date</th>
+            </tr>
+         </thead>
+         
+         <tbody>
+            {% for wheel in get_all_flagged_wheels %}
+               <tr>
+                  <td>{{ wheel.unit }}</td>
+                  <td>{{ wheel.vehicle }}</td>
+                  <td>{{ wheel.wheel_id }}</td>
+                  <td>{{ wheel.exam_date }}</td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+
+        var dataDummy = '{{ info }}';
+        var dataDummy1 = dataDummy.split('#');
+
+        var data = google.visualization.arrayToDataTable([
+          ['Pan', 'Since'],
+          [0,860]
+          ]);
+
+        var dataArray = []
+        for (var i = 1; i < dataDummy1.length; i++) {
+          var dataDummy1split = dataDummy1[i].split('|');
+          data.addRows([
+            [1*dataDummy1split[0], 1*dataDummy1split[1]]
+            ]);
+          }
+
+
+        var options = {
+          title: 'Pan Size vs. Since comparison',
+          hAxis: {title: 'Pan Size', minValue: 0, maxValue: 15},
+          vAxis: {title: 'Since', minValue: 750, maxValue: 860},
+          legend: 'none'
+        };
+
+        var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
+
+        chart.draw(data, options);
+      }
+    </script>
+
+    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+
+   </body>
+</html>
