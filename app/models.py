@@ -5,7 +5,8 @@ models.py -
 """
 
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
+import datetime
+from dateutil.relativedelta import relativedelta
 
 db = SQLAlchemy()
 
@@ -15,7 +16,7 @@ class Base(db.Model):
     """
     __abstract__ = True
 
-    def json(self):
+    def as_dict(self):
         """Define a base way to jsonify models, dealing with datetime objects
         """
 
@@ -23,7 +24,7 @@ class Base(db.Model):
         return ''
 
 
-class Wheels(Base):
+class WheelsDB(Base):
     """Model for wheels"""
 
     __tablename__ = 'wheels_table'
@@ -38,62 +39,110 @@ class Wheels(Base):
     measure_date = db.Column(db.String(10))
     pan_size = db.Column(db.DECIMAL)
     since = db.Column(db.DECIMAL)
-    # target_date = db.Column(db.)
-    # flag = db.Column(db.Boolean)
+    target_date = db.Column(db.DateTime)
+    flag = db.Column(db.Boolean)
 
-    def get_target_date():
-        if unit.substring(0, 2) == "221":
-            days_per_mm = 100000 / 850
-            last_turn = 823
+
+class Wheels():
+
+    def __init__(self, values):
+        if isinstance(values[6], int):
+            raise ValueError
+        self.unit = values[0]
+        self.vehicle = values[1]
+        self.serial_no = values[2]
+        self.description = values[3]
+        self.axle_position = values[4]
+        self.measure_date = values[5]  # datetime.datetime.strptime(
+        self.pan_size = int(values[6])
+        self.target_date = self.get_target_date()
+        self.flag = False
+
+    def get_target_date(self):
+        if self.unit[0:3] == "221":
+            days_per_mm = 1400000 / (850 * 61)
+            last_turn = 799
         else:  # if 220
-            days_per_mm = 100000 / 750
-            last_turn = 743
-        days_left = (pan_size - last_turn) * days_per_mm
-        return measure_date + days_left
+            days_per_mm = 1400000 / (750 * 61)
+            last_turn = 719
+        days_left = (self.pan_size - last_turn) * days_per_mm
+        # return self.measure_date + days_left
+        return days_left
 
-#     def __init__(self, unit_code, vehicle_code, serial_no, description, axle_position):
-#         """
-#         >>> Trains(220)
-#         """
-#         self.unit = unit_code
-#         self.vehicle = vehicle_code
-#         self.serial_no = serial_no
-#         self.description = description
-#         self.axle_position = axle_position
-#         self.flag = False
+    def as_dict(self):
+        return {
+            'unit': self.unit,
+            'vehicle': self.vehicle,
+            'serial_no': self.serial_no,
+            'description': self.description,
+            'axle_position': self.axle_position,
+            'measure_date': self.measure_date,
+            'pan_size': self.pan_size,
+            'target_date': self.target_date,
+            'flag': self.flag
+        }
 
 
-# class Schedule(Base):
+# class ScheduleDB(Base):
 
 #     __tablename__ = "mv_schedule"
-#     unit = db.Column()
-#     exam_date = db.Column()
+#     schedule_id = db.Column(db.Integer, primary_key=True, nullable=False)
+#     unit = db.relationship('Wheels', backref='mv_schedule', lazy=True, uselist=False)
+#     exam_date = db.Column(db.DateTime)
 
 
-def set_up_schedule(self):
-    today = datetime.now
-    for i in range(len(trains)):
-        # TODO: check units are distinct
-        exam = Schedule(trains['unit'], today + i)
-    for i in range(len(trains)):
-        check_needs_wheels()
+class Schedule():
 
+    def __init__(self, values):
+        self.unit = values[0]
+        self.exam_date = values[1]
 
-def check_needs_wheels(self):
-    # Get train by unit
-    if train['target_date'] - schedule['exam_date'] < 90:
-        train['flag'] = True
-    else:
-        schedule['exam_date'] += 90  # days
+    def as_dict(self):
+        return {
+            'unit': self.unit,
+            'exam_date': self.exam_date
+        }
 
 
 def load_data():
     import csv
     spamReader = csv.reader(open('static/trajectory.csv', newline=''), delimiter=',', quotechar='|')
-    strong = ""
+    data = []
     for row in spamReader:
-        strong += row[7] + '|' + row[6] + '#'
-    return strong[:-1]
+        try:
+            wheel = Wheels(row).as_dict()
+            data.append(wheel)
+        except ValueError:
+            pass
+    return data
+
+
+def load_schedule():
+    exam_date_now = datetime.date.today()
+    wheels = load_data()
+    return [wheel['target_date'] for wheel in wheels]
+    exams = []
+    for wheel in wheels:
+        # TODO: check units are distinct
+        exam_date_now += datetime.timedelta(days=1)
+        exam = Schedule([wheel['unit'], exam_date_now])
+        exams.append(exam)
+    # for exam in exams:
+    #    unit = (wheel for wheel in wheels if wheel['unit'] == exam.as_dict()['unit'])
+    #    return check_needs_wheels(exam, unit)
+    return [(wheel, exam.as_dict()['exam_date']) for wheel in wheels if wheel['flag'] == True]
+
+
+def check_needs_wheels(exam, unit):
+    no_flags = True
+    for wheel in unit:
+        rd = relativedelta(wheel['target_date'], exam.as_dict()['exam_date'])
+        return rd.days
+        if rd .days < 90:
+            wheel['flag'] = True
+            no_flags = False
+    if no_flags:
+        schedule['exam_date'] += 90  # days
 
 
 if __name__ == '__main__':
@@ -101,5 +150,5 @@ if __name__ == '__main__':
     # db.init_app(app
     # db.create_all()
     # app.run(ip='0.0.0.0')
-    load_data()
+    # load_data()
     pass

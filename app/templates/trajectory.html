@@ -46,35 +46,11 @@
             </div>
           </div>
 
-          <div class="inner cover">
-            <h1 class="cover-heading">Schedule a wheel change</h1>
-          </div>
       
-      <table>
-         <thead>
-            <tr>
-               <th>Unit</th>
-               <th>Vehicle</th>
-               <th>Wheel ID</th>
-               <th>Next MV Exam Date</th>
-            </tr>
-         </thead>
-         
-         <tbody>
-            {% for wheel in get_all_flagged_wheels %}
-               <tr>
-                  <td>{{ wheel.unit }}</td>
-                  <td>{{ wheel.vehicle }}</td>
-                  <td>{{ wheel.wheel_id }}</td>
-                  <td>{{ wheel.exam_date }}</td>
-               </tr>
-            {% endfor %}
-         </tbody>
-      </table>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-      google.charts.load('current', {'packages':['corechart']});
+      google.charts.load('current', {'packages':['corechart', 'scatter']});
       google.charts.setOnLoadCallback(drawChart);
 
       function drawChart() {
@@ -84,24 +60,34 @@
         var dataDummy1 = dataDummy.split('#');
 
         var data = google.visualization.arrayToDataTable([
-          ['Pan', 'Since'],
-          [0,860]
+          ['Pan', 'Since', 'Red', 'Yellow', 'Green'],
+          [1400000, null, 799, 809, 829],
+          [0, 860, 860, 860, 860],
+
+          [0, 780, 780, 780, 780],
+          [1400000, null, 719, 729, 743]
           ]);
 
         var dataArray = []
         for (var i = 1; i < dataDummy1.length; i++) {
           var dataDummy1split = dataDummy1[i].split('|');
           data.addRows([
-            [1*dataDummy1split[0], 1*dataDummy1split[1]]
+            [1*dataDummy1split[0], 1*dataDummy1split[1], null, null, null]
             ]);
           }
 
 
         var options = {
           title: 'Pan Size vs. Since comparison',
+          series: {
+            0: {targetAxisIndex:0},
+            1: {targetAxisIndex:1, color: 'red', lineWidth: 5, pointSize: 0},
+            2: {targetAxisIndex:1, color: 'orange', lineWidth: 5, pointSize: 0},
+            3: {targetAxisIndex:1, color: 'green', lineWidth: 5, pointSize: 0}
+          },
           hAxis: {title: 'Pan Size', minValue: 0, maxValue: 15},
           vAxis: {title: 'Since', minValue: 750, maxValue: 860},
-          legend: 'none'
+          legand: 'none'
         };
 
         var chart = new google.visualization.ScatterChart(document.getElementById('chart_div'));
@@ -110,7 +96,7 @@
       }
     </script>
 
-    <div id="chart_div" style="width: 900px; height: 500px;"></div>
+    <div id="chart_div" style="width: 900px; height: 500px;margin-top:20px;align:center;"></div>
 
     <div class="mastfoot">
         <div class="inner">

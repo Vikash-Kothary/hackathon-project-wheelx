@@ -50,6 +50,10 @@
             <h1 class="cover-heading">Schedule a wheel change</h1>
           </div>
 
+          {# info #}
+                {% for i in range(0, info|length) %}
+                {% endfor %}
+
           <div style="width: 100%;text-align: center;margin-top:40px;">
             <canvas id="canvas"></canvas>
         </div>
@@ -59,36 +63,48 @@
                 var barChartData = {
                     labels: ["Monday", "Tuesday", "Wenesday", "Thursday", "Friday", "Saturday", "Sunday"],
                     datasets: [{
-                        label: 'Slot 1',
+                        label: 'Axle 1',
                         backgroundColor: window.chartColors.red,
                         data: [
                             0,
                             0,
                             1,
-                            2,
+                            1,
                             0,
-                            3,
-                            4
+                            1,
+                            1
                         ]
                     }, {
-                        label: 'Slot 2',
+                        label: 'Axle 2',
                         backgroundColor: window.chartColors.blue,
                         data: [
-                        2,
+                        1,
                         0,
                         0,
-                        4,
-                        3,
+                        1,
+                        1,
                         0,
                         1
                         ]
                     }, {
-                        label: 'Slot 3',
+                        label: 'Axle 3',
                         backgroundColor: window.chartColors.green,
                         data: [
                         1,
                         0,
-                        2,
+                        1,
+                        1,
+                        0,
+                        0,
+                        0
+                        ]
+                    }, {
+                        label: 'Axle 4',
+                        backgroundColor: window.chartColors.orange,
+                        data: [
+                        1,
+                        0,
+                        0,
                         1,
                         0,
                         0,

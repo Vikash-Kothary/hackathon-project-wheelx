@@ -23,7 +23,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 # DATABASE['host'], DATABASE['port'], DATABASE['db_name'])
 
 
-@app.route('/')
+@app.route('/success')
 def success():
     return 'Python is working'
 
