@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>WheelX</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="cover.css" rel="stylesheet">
+
+    <script src="Chart.bundle.js"></script>
+    <script src="utils.js"></script>
+
+    <style>
+        .table td{
+            text-align: left;
+        }
+    </style>
+  </head>
+
+  <body>
+
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">WheelX</h3>
+              <nav class="nav nav-masthead">
+                <a class="nav-link" href="/">Home</a>
+                <a class="nav-link active" href="/wheels">Wheels</a>
+                <a class="nav-link" href="/schedule">Schedule</a>
+                <a class="nav-link" href="/trajectory">Trajectory</a>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Schedule a wheel change</h1>
+          </div>
+
+          <div style="width: 100%;text-align: center;margin-top:40px;">
+            <canvas id="canvas"></canvas>
+        </div>
+
+          <script>
+
+                var barChartData = {
+                    labels: ["Monday", "Tuesday", "Wenesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                    datasets: [{
+                        label: 'Slot 1',
+                        backgroundColor: window.chartColors.red,
+                        data: [
+                            0,
+                            0,
+                            1,
+                            2,
+                            0,
+                            3,
+                            4
+                        ]
+                    }, {
+                        label: 'Slot 2',
+                        backgroundColor: window.chartColors.blue,
+                        data: [
+                        2,
+                        0,
+                        0,
+                        4,
+                        3,
+                        0,
+                        1
+                        ]
+                    }, {
+                        label: 'Slot 3',
+                        backgroundColor: window.chartColors.green,
+                        data: [
+                        1,
+                        0,
+                        2,
+                        1,
+                        0,
+                        0,
+                        0
+                        ]
+                    }]
+            
+                };
+                window.onload = function() {
+                    var ctx = document.getElementById("canvas").getContext("2d");
+                    window.myBar = new Chart(ctx, {
+                        type: 'bar',
+                        data: barChartData,
+                        options: {
+                            title:{
+                                display:true,
+                                text:"Slots Available"
+                            },
+                            tooltips: {
+                                mode: 'index',
+                                intersect: false
+                            },
+                            responsive: true,
+                            scales: {
+                                xAxes: [{
+                                    stacked: true,
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
+                            }
+                        }
+                    });
+                };
+            </script>
+            
+
+          
+          <div class="mastfoot">
+            <div class="inner">
+                <p>WheelX by Gavin, Vic, Adam and Harvey</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="jquery-3.1.1.slim.min.js"></script>
+    <script>window.jQuery || document.write('<script src="jquery.min.js"><\/script>')</script>
+    <script src="tether.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="ie10-viewport-bug-workaround.js"></script>
+  </body>
+</html>

@@ -1,0 +1,120 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>WheelX</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="cover.css" rel="stylesheet">
+
+    <style>
+        .table td{
+            text-align: left;
+        }
+    </style>
+    <script src="babylon.js"></script>
+    <script src="pep.js"></script>
+    <script type="text/javascript" src="loader.js"></script>
+  </head>
+
+  <body>
+
+
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">WheelX</h3>
+              <nav class="nav nav-masthead">
+                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link active" href="/wheels">Wheels</a>
+                    <a class="nav-link" href="/schedule">Schedule</a>
+                    <a class="nav-link" href="/trajectory">Trajectory</a>
+              </nav>
+            </div>
+          </div>
+
+          <div class="inner cover">
+            <h1 class="cover-heading">Wheels</h1>           
+          </div>
+
+          <canvas id="renderCanvas" touch-action="none" style="margin-top:40px;"></canvas>
+          
+          <script>
+          
+                  var canvas = document.getElementById("renderCanvas"); // Get the canvas element 
+          
+                  var engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
+          
+          
+                  /******* Add the create scene function ******/
+                  var createScene = function () {
+                    
+                        // Create the scene space
+                        var scene = new BABYLON.Scene(engine);
+                    
+                        // Add a camera to the scene and attach it to the canvas
+                        var camera = new BABYLON.ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, BABYLON.Vector3.Zero(), scene);
+                        camera.attachControl(canvas, true);
+                    
+                        // Add lights to the scene
+                        var light1 = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(1, 1, 0), scene);
+                        var light2 = new BABYLON.PointLight("light2", new BABYLON.Vector3(0, 1, -1), scene);
+                    
+                        // Add and manipulate meshes in the scene
+                        var cone = BABYLON.MeshBuilder.CreateCylinder("cone", {diameterTop:0.75, height: 0.25, tessellation: 96}, scene);
+                    
+                        return scene;
+                    
+                    };
+          
+                      /******* End of the create scene function ******/    
+          
+                      var scene = createScene(); //Call the createScene function
+          
+                  engine.runRenderLoop(function () { // Register a render loop to repeatedly render the scene
+                          scene.render();
+                  });
+          
+          
+                  window.addEventListener("resize", function () { // Watch for browser/canvas resize events
+                          engine.resize();
+                  });
+          </script>
+          
+          <div class="mastfoot">
+            <div class="inner">
+              <p>WheelX by Gavin, Vic, Adam and Harvey</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="jquery-3.1.1.slim.min.js"></script>
+    <script>window.jQuery || document.write('<script src="jquery.min.js"><\/script>')</script>
+    <script src="tether.min.js"></script>
+    <script src="bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="ie10-viewport-bug-workaround.js"></script>
+
+  </body>
+</html>
