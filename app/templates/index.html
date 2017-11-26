@@ -60,6 +60,7 @@
               </tr>
             </thead>
             <tbody>
+              <!--
               <tr>
                 <th scope="row">1</th>
                 <td>2010001</td>
@@ -79,23 +80,32 @@
                 <td>8</td>
               </tr>
               <tr>
-                <th scope="row">1</th>
+                <th scope="row">4</th>
                 <td>2010001</td>
                 <td>310006</td>
                 <td>1</td>
-            </tr>
+              </tr>
                 <tr>
-                    <th scope="row">2</th>
+                    <th scope="row">5</th>
                     <td>2010002</td>
                     <td>310009</td>
                     <td>2</td>
                 </tr>
                 <tr>
-                    <th scope="row">3</th>
+                    <th scope="row">6</th>
                     <td>2010001</td>
                     <td>310009</td>
                     <td>8</td>
                 </tr>
+              -->
+                {% for i in range(0, info|length) %}
+                <tr>
+                  <th scope="row">{{ i }}</th>
+                  <td>{{ info[i].unit }}</td>
+                  <td>{{ info[i].vehicle }}</td>
+                  <td>{{ info[i].axle_position }}</td>
+                </tr>
+                {% endfor %}
             </tbody>
           </table>
 
